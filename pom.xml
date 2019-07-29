@@ -9,14 +9,15 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>mmall-cart-service</module>
-        <module>mmall-common-toolset</module>
-        <module>mmall-config-server</module>
         <module>mmall-eureka-server</module>
+        <module>mmall-config-server</module>
+        <module>mmall-api-gateway-zuul</module>
+        <module>mmall-cart-service</module>
         <module>mmall-order-service</module>
         <module>mmall-product-service</module>
         <module>mmall-shipping-service</module>
         <module>mmall-user-service</module>
+        <module>mmall-common-toolset</module>
     </modules>
 
     <parent>

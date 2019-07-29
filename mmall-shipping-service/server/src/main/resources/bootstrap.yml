@@ -1,0 +1,18 @@
+
+spring:
+  application:
+    name: mmall-shipping-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: mmall-config-server
+      profile: dev
+      label: shipping
+      name: mmall-shipping-service
+      fail-fast: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/,http://localhost:8763/eureka/

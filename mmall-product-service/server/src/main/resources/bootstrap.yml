@@ -1,0 +1,31 @@
+
+spring:
+  application:
+    name: mmall-product-service
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        service-id: mmall-config-server
+      profile: dev
+      label: product
+      name: mmall-product-service
+      fail-fast: true
+    stream:
+      bindings:
+        decr_product_count:
+          destination: decr_product_count  #exchange名称，交换模式默认是topic
+          group: product
+        decr_product_count_result:
+          destination: decr_product_count_result
+          group: product
+        incr_product_count:
+          destination: incr_product_count
+          group: product
+        incr_product_count_result:
+          destination: incr_product_count_result
+          group: product
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/,http://localhost:8762/eureka/,http://localhost:8763/eureka/

@@ -2,32 +2,18 @@ package com.oecoo.gateway;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
-import org.springframework.cloud.netflix.zuul.filters.ZuulProperties;
+import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableZuulProxy
+@ComponentScan(basePackages = "com.oecoo")
 public class ApiGatewayApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(ApiGatewayApplication.class, args);
-    }
-
-    /**
-     * 动态路由
-     * 使用 git 实时刷新 线上配置信息，
-     * 避免了新增 Api时，重启服务
-     *
-     * @return
-     */
-    @ConfigurationProperties("zuul")
-    @RefreshScope
-    public ZuulProperties zuulProperties() {
-        return new ZuulProperties();
     }
 
 }

@@ -5,10 +5,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-    <groupId>com.oecoo</groupId>
-    <artifactId>mmall-user-service</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-</parent>
+        <groupId>com.oecoo</groupId>
+        <artifactId>mmall-user-service</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
 
     <artifactId>mmall-user-client</artifactId>
 

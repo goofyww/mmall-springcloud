@@ -1,4 +1,3 @@
-
 spring:
   application:
     name: mmall-config-server
@@ -8,8 +7,8 @@ spring:
         git:
           uri: https://github.com/goofyww/mmall-config-repo.git
           username: goofyww
-          password: xxxxxx
-          basedir: C:\Users\gf\IdeaProjects\mmall-config-repo
+          password: *
+          basedir: H:\ideaProjects\mmall-config-repo
   rabbitmq:
     host: www.oecoo.com
     port: 5672

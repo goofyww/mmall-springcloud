@@ -3,6 +3,7 @@ package com.oecoo.cart.controller.portal;
 import com.oecoo.cart.common.Const;
 import com.oecoo.cart.entity.vo.CartVo;
 import com.oecoo.cart.service.ICartService;
+import com.oecoo.toolset.common.CookieConst;
 import com.oecoo.toolset.common.ResponseCode;
 import com.oecoo.toolset.common.ServerResponse;
 import com.oecoo.toolset.util.CookieUtil;
@@ -35,7 +36,7 @@ public class CartController {
      */
     @GetMapping("list.do")
     public ServerResponse<CartVo> list(HttpServletRequest request) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -54,7 +55,7 @@ public class CartController {
      */
     @PostMapping("add_cart.do")
     public ServerResponse<CartVo> addCartProduct(HttpServletRequest request, Integer count, Integer productId) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -74,7 +75,7 @@ public class CartController {
      */
     @PostMapping("update_cart.do")
     public ServerResponse<CartVo> updateCart(HttpServletRequest request, Integer count, Integer productId) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -93,7 +94,7 @@ public class CartController {
      */
     @PostMapping("delete_product.do")
     public ServerResponse<CartVo> deleteCartProduct(HttpServletRequest request, String productIds) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -111,7 +112,7 @@ public class CartController {
      */
     @GetMapping("select_all.do")
     public ServerResponse<CartVo> selectAll(HttpServletRequest request) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -129,7 +130,7 @@ public class CartController {
      */
     @GetMapping("un_select_all.do")
     public ServerResponse<CartVo> unSelectAll(HttpServletRequest request) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -142,7 +143,7 @@ public class CartController {
 
     @GetMapping("select.do")
     public ServerResponse<CartVo> select(HttpServletRequest request, Integer productId) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -155,7 +156,7 @@ public class CartController {
 
     @GetMapping("un_select.do")
     public ServerResponse<CartVo> unSelect(HttpServletRequest request, Integer productId) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -173,13 +174,12 @@ public class CartController {
      */
     @GetMapping("get_cart_product_count.do")
     public ServerResponse<Integer> getCartProductCount(HttpServletRequest request) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
         User user = JsonUtil.string2Obj(RedisShardedPoolUtil.get(loginToken), User.class);
         if (user == null) {
-            //如果用户未登录 显示购物车数量是 0
             return ServerResponse.createBySuccessData(0);
         }
         return iCartService.getCartProductCount(user.getId());

@@ -3,6 +3,7 @@ package com.oecoo.shipping.controller.portal;
 import com.github.pagehelper.PageInfo;
 import com.oecoo.shipping.entity.pojo.Shipping;
 import com.oecoo.shipping.service.IShippingService;
+import com.oecoo.toolset.common.CookieConst;
 import com.oecoo.toolset.common.ResponseCode;
 import com.oecoo.toolset.common.ServerResponse;
 import com.oecoo.toolset.util.CookieUtil;
@@ -27,7 +28,7 @@ public class ShippingController {
 
     @PostMapping("add.do")
     public ServerResponse add(HttpServletRequest request, Shipping shipping) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -40,7 +41,7 @@ public class ShippingController {
 
     @PostMapping("update.do")
     public ServerResponse update(HttpServletRequest request, Shipping shipping) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -53,7 +54,7 @@ public class ShippingController {
 
     @PostMapping("delete.do")
     public ServerResponse delete(HttpServletRequest request, Integer shippingId) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -66,7 +67,7 @@ public class ShippingController {
 
     @GetMapping("select.do")
     public ServerResponse<Shipping> select(HttpServletRequest request, Integer shippingId) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -82,7 +83,7 @@ public class ShippingController {
     public ServerResponse<PageInfo> list(@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
                                          @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
                                          HttpServletRequest request) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }

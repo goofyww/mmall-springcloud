@@ -6,6 +6,7 @@ import com.alipay.demo.trade.config.Configs;
 import com.google.common.collect.Maps;
 import com.oecoo.order.common.Const;
 import com.oecoo.order.service.IOrderService;
+import com.oecoo.toolset.common.CookieConst;
 import com.oecoo.toolset.common.ResponseCode;
 import com.oecoo.toolset.common.ServerResponse;
 import com.oecoo.toolset.util.CookieUtil;
@@ -34,7 +35,7 @@ public class OrderController {
 
     @PostMapping("create.do")
     public ServerResponse create(HttpServletRequest request, Integer shippingId) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -47,7 +48,7 @@ public class OrderController {
 
     @PostMapping("cancel.do")
     public ServerResponse cancel(HttpServletRequest request, Long orderNo) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -60,7 +61,7 @@ public class OrderController {
 
     @GetMapping("get_order_cart_product.do")
     public ServerResponse getOrderCartProduct(HttpServletRequest request) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -73,7 +74,7 @@ public class OrderController {
 
     @GetMapping("list.do")
     public ServerResponse list(HttpServletRequest request, @RequestParam(value = "pageNum", defaultValue = "1") int pageNum, @RequestParam(value = "pageSize", defaultValue = "10") int pageSize) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -86,7 +87,7 @@ public class OrderController {
 
     @GetMapping("detail.do")
     public ServerResponse detail(HttpServletRequest request, Long orderNo) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -109,7 +110,7 @@ public class OrderController {
      */
     @PostMapping("pay.do")
     public ServerResponse pay(Long orderNo, HttpServletRequest request) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -119,6 +120,20 @@ public class OrderController {
         }
         String path = request.getSession().getServletContext().getRealPath("upload");
         return iOrderService.pay(orderNo, user.getId(), path);
+    }
+
+    /**
+     * TODO 商品寄到买家处，买家点击完结订单
+     * 完结订单 分为两种情况
+     * 1. 买家手动点击 收到货品
+     * 2. 买家商品显示已寄达，7个工作日内自动确认
+     */
+    @PostMapping("finish.do")
+    public ServerResponse finish(Long orderNo, HttpServletRequest request) {
+        // 1. 先判断用户是否登陆
+        // 2. 取 用户Id 订单No
+        // 3. 订单数据更新写入为 已完成
+        return ServerResponse.createBySuccess();
     }
 
     /**
@@ -175,7 +190,7 @@ public class OrderController {
      */
     @GetMapping("query_order_pay_status.do")
     public ServerResponse<Boolean> queryOrderPayStatus(HttpServletRequest request, Long orderNo) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }

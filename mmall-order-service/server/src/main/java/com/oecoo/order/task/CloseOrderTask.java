@@ -88,14 +88,14 @@ public class CloseOrderTask {
     //@Scheduled(cron = "0 */1 * * * ?")
 //    public void closeOrderTaskV4() {
 //        log.info("关闭订单定时任务启动");
-//        RLock lock = redissonManager.getRedisson().getLock(Const.REDIS_LOCK.CLOSE_ORDER_LOCK_NAME);
+//        RLock lock = redissonManager.getRedisson().getLock(CookieConst.REDIS_LOCK.CLOSE_ORDER_LOCK_NAME);
 //        boolean getLock = false;
 //        try {
 //            if (getLock = lock.tryLock(0, 50, TimeUnit.SECONDS)) {
-//                log.info("Redisson获取到锁：{}，ThreadName:{}", Const.REDIS_LOCK.CLOSE_ORDER_LOCK_NAME, Thread.currentThread().getName());
+//                log.info("Redisson获取到锁：{}，ThreadName:{}", CookieConst.REDIS_LOCK.CLOSE_ORDER_LOCK_NAME, Thread.currentThread().getName());
 //                // iOrderService.closeOrder(HOUR);
 //            } else {
-//                log.info("Redisson没有获取到锁：{}，ThreadName:{}", Const.REDIS_LOCK.CLOSE_ORDER_LOCK_NAME, Thread.currentThread().getName());
+//                log.info("Redisson没有获取到锁：{}，ThreadName:{}", CookieConst.REDIS_LOCK.CLOSE_ORDER_LOCK_NAME, Thread.currentThread().getName());
 //            }
 //        } catch (InterruptedException e) {
 //            log.error("Redisson获取分布式锁异常：{}", e);

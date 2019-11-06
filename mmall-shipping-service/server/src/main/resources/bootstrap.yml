@@ -11,6 +11,9 @@ spring:
       label: shipping
       name: mmall-shipping-service
       fail-fast: true
+#   config2.x 版本使用webhooks无法刷新client配置的解决方案
+    bus:
+      id: ${spring.application.name}:${spring.cloud.config.profile}:${random.value}
 
 eureka:
   client:

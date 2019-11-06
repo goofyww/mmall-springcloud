@@ -1,5 +1,6 @@
 package com.oecoo.user.controller.portal;
 
+import com.oecoo.toolset.common.CookieConst;
 import com.oecoo.toolset.common.ResponseCode;
 import com.oecoo.toolset.common.ServerResponse;
 import com.oecoo.toolset.util.CookieUtil;
@@ -42,10 +43,10 @@ public class UserController {
 
         ServerResponse<User> response = iUserService.login(username, password);
         if (response.isSuccess()) {
-            // 写入 Cookie
-            CookieUtil.writeLoginToken(httpServletResponse, session.getId());
             // 将登录用户信息存入redis，有效时间为30分钟
             RedisShardedPoolUtil.setEx(session.getId(), JsonUtil.obj2String(response.getData()), Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
+            // 写入 Cookie
+            CookieUtil.writeLoginToken(httpServletResponse, CookieConst.LOGIN_TOKEN, session.getId());
             return ServerResponse.createBySuccessData(response.getData());
         }
         return response;
@@ -58,8 +59,8 @@ public class UserController {
      */
     @PostMapping(value = "logout.do")
     public ServerResponse<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        String loginToken = CookieUtil.readLoginToken(request);
-        CookieUtil.delLoginToken(request, response);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
+        CookieUtil.delLoginToken(request, response, CookieConst.LOGIN_TOKEN);
         RedisShardedPoolUtil.del(loginToken);
         return ServerResponse.createBySuccess();
     }
@@ -95,7 +96,7 @@ public class UserController {
      */
     @PostMapping(value = "get_user_info.do")
     public ServerResponse<User> getUserInfo(HttpServletRequest request) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("用户未登录,无法获取当前用户的信息");
         }
@@ -152,7 +153,7 @@ public class UserController {
      */
     @PostMapping(value = "rest_password.do")
     public ServerResponse<String> restPassword(HttpServletRequest request, String passwordOld, String passwordNew) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -171,7 +172,7 @@ public class UserController {
      */
     @PostMapping(value = "update_information.do")
     public ServerResponse<User> updateInformation(HttpServletRequest request, User user) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }
@@ -203,7 +204,7 @@ public class UserController {
      */
     @PostMapping(value = "get_information.do")
     public ServerResponse<User> getInformation(HttpServletRequest request) {
-        String loginToken = CookieUtil.readLoginToken(request);
+        String loginToken = CookieUtil.readLoginToken(request, CookieConst.LOGIN_TOKEN);
         if (StringUtils.isEmpty(loginToken)) {
             return ServerResponse.createByErrorMessage("当前用户未登录");
         }

@@ -11,14 +11,9 @@ spring:
       label: cart
       name: mmall-cart-service
       fail-fast: true
-    stream:
-      bindings:
-        clean_carts:
-          destination: clean_carts  #exchange名称，交换模式默认是topic
-          group: cart
-        clean_carts_result:
-          destination: clean_carts_result
-          group: cart
+#   config2.x 版本使用webhooks无法刷新client配置的解决方案
+    bus:
+      id: ${spring.application.name}:${spring.cloud.config.profile}:${random.value}
 
 eureka:
   client:

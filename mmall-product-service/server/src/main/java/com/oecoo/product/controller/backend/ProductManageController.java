@@ -21,6 +21,7 @@ import java.util.Map;
 /**
  * Created by gf on 2018/4/29.
  */
+//@CrossOrigin//解决跨域问题 （仅支持所标注的类或api方法）
 @RestController
 @RequestMapping("/manage/product/")
 @Slf4j

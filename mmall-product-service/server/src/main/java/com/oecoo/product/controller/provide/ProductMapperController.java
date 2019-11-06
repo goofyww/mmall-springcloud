@@ -24,7 +24,8 @@ public class ProductMapperController {
     private ProductMapper productMapper;
 
     @GetMapping("msg.do")
-    public String msg() {
+    public String msg() throws InterruptedException {
+        Thread.sleep(2000L);
         return "This is product msg 02";
     }
 

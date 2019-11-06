@@ -150,7 +150,7 @@
         </if>
     </update>
     <select id="selectCartProductCountByUserId" parameterType="Integer" resultType="java.lang.Integer">
-        SELECT NULLIF (sum(quantity),0) as COUNT FROM mmall_cart
+        SELECT IFNULL(SUM(quantity),0) as COUNT FROM mmall_cart
         WHERE user_id = #{userId}
     </select>
     <select id="selectCheckedCartByUserId" parameterType="int" resultMap="BaseResultMap">

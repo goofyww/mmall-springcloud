@@ -1,5 +1,6 @@
 package com.oecoo.user.controller.backend;
 
+import com.oecoo.toolset.common.CookieConst;
 import com.oecoo.toolset.common.ServerResponse;
 import com.oecoo.toolset.util.CookieUtil;
 import com.oecoo.toolset.util.JsonUtil;
@@ -30,11 +31,12 @@ public class UserManageController {
     public ServerResponse<User> login(HttpServletResponse httpServletResponse, HttpSession session, String username, String password) {
         ServerResponse<User> response = iUserService.login(username, password);
         if (response.isSuccess()) {
+            // 用户名和密码 有效
             User user = response.getData();
             //Role 1 管理员
             if (user.getRole() == Const.Role.ROLE_ADMIN) {
                 // 写入 Cookie
-                CookieUtil.writeLoginToken(httpServletResponse, session.getId());
+                CookieUtil.writeLoginToken(httpServletResponse, CookieConst.LOGIN_TOKEN, session.getId());
                 // 将登录用户信息存入redis，有效时间为30分钟
                 RedisShardedPoolUtil.setEx(session.getId(), JsonUtil.obj2String(response.getData()), Const.RedisCacheExTime.REDIS_SESSION_EXTIME);
                 return response;
@@ -42,6 +44,7 @@ public class UserManageController {
                 return ServerResponse.createByErrorMessage("不是管理员,无法登录");
             }
         }
+        // 用户名和密码 无效，登录失败
         return response;
     }
 
